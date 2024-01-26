@@ -9,8 +9,12 @@ async fn download<W: std::io::Write>(url: &str, mut wtr: W) -> Result<usize, Err
     //let url = "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2/ETOPO2v2-2006/ETOPO2v2g/netCDF/ETOPO2v2g_f4_netCDF.zip";
     // https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml
 
-    let body = reqwest::get(url).await?.bytes().await?;
-    wtr.write_all(&body)?;
+    let mut res = reqwest::get(url).await?;
+    let mut size = 0;
+    while let Some(chunk) = res.chunk().await? {
+        size += chunk.len();
+        wtr.write_all(&chunk)?;
+    }
     /*
         dbg!("filename", filename);
         let mut fp = std::io::BufWriter::new(
@@ -25,9 +29,8 @@ async fn download<W: std::io::Write>(url: &str, mut wtr: W) -> Result<usize, Err
         res.read_to_end(&mut buffer)?;
         let s = fp.write(buffer.as_slice())?;
         dbg!(s);
-        //while let Some(chunk) = res.chunk().await? {
     */
-    Ok(body.len())
+    Ok(size)
 }
 
 #[cfg(test)]
@@ -46,7 +49,6 @@ mod tests {
             .unwrap();
             dbg!(size);
         }
-        dbg!(&body);
         assert!(false);
     }
 }
