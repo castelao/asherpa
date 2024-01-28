@@ -23,7 +23,7 @@ mod tests {
     async fn demo() {
         let mut body = vec![];
         {
-            let size = download(
+            let size = get(
                 "https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml",
                 &mut body,
             )
