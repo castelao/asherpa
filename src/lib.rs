@@ -1,5 +1,3 @@
-use reqwest::get;
-
 use reqwest;
 
 type Error = Box<dyn std::error::Error>;
