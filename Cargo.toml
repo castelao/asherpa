@@ -2,6 +2,12 @@
 name = "asherpa"
 version = "0.0.1"
 edition = "2021"
+authors = [
+  "Guilherme Castelão <guilherme@castelao.net>",
+  "Luiz Irber <luiz.irber@gmail.com>"
+  ]
+description = "Asynchronous download of support data"
+license = "MIT OR Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
