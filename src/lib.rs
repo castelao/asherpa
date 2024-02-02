@@ -13,6 +13,18 @@ pub async fn get<W: std::io::Write>(url: &str, wtr: &mut W) -> Result<usize, Err
     Ok(size)
 }
 
+async fn download(url: &str, filename: PathBuf) -> Result<usize, Error> {
+    let mut file = std::fs::OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .open(filename)?;
+
+    let mut buffer = vec![];
+    let size = get(url, &mut buffer).await?;
+    let s = file.write(buffer.as_slice())?;
+    Ok(s)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
