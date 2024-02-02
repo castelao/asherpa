@@ -29,6 +29,5 @@ mod tests {
             .unwrap();
             dbg!(size);
         }
-        assert!(false);
     }
 }
