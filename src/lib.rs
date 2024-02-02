@@ -3,7 +3,7 @@ use reqwest;
 type Error = Box<dyn std::error::Error>;
 
 // Should this have a size limit?
-async fn get<W: std::io::Write>(url: &str, wtr: &mut W) -> Result<usize, Error> {
+pub async fn get<W: std::io::Write>(url: &str, wtr: &mut W) -> Result<usize, Error> {
     let mut res = reqwest::get(url).await?;
     let mut size = 0;
     while let Some(chunk) = res.chunk().await? {
