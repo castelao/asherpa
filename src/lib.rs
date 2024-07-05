@@ -3,6 +3,13 @@ use tokio;
 
 type Error = Box<dyn std::error::Error>;
 
+struct Artifact {
+    url: String,
+    filename: Option<String>,
+    size: Option<usize>,
+    hash: Option<String>,
+}
+
 // Should this have a size limit?
 async fn get<W: std::io::Write>(url: &str, mut wtr: W) -> Result<usize, Error> {
     tracing::debug!("Getting from: {}", url);
