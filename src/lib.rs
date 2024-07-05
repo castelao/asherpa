@@ -5,10 +5,11 @@ type Error = Box<dyn std::error::Error>;
 
 // Should this have a size limit?
 async fn get<W: std::io::Write>(url: &str, mut wtr: W) -> Result<usize, Error> {
-    dbg!("Inside get");
+    tracing::debug!("Getting from: {}", url);
     let mut res = reqwest::get(url).await?;
     let mut size = 0;
     while let Some(chunk) = res.chunk().await? {
+        tracing::trace!("Chunk size: {}", chunk.len());
         size += chunk.len();
         wtr.write_all(&chunk)?;
     }
@@ -34,7 +35,9 @@ async fn download<P: AsRef<Path>>(url: &str, filename: P) -> Result<usize, Error
     );
 
     let size = get(url, &mut fp).await?;
+    tracing::trace!("Downloaded {} bytes", size);
     fp.flush()?;
+    tracing::trace!("Flushed");
     Ok(size)
 }
 
