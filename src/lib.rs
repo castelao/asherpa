@@ -39,7 +39,7 @@ async fn download<P: AsRef<Path>>(url: &str, filename: P) -> Result<usize, Error
             .open(filename)?,
     );
 
-    let size = get(url, &mut fp).await?;
+    let size = get(artifact.url(), &mut fp).await?;
     tracing::trace!("Downloaded {} bytes", size);
     fp.flush()?;
     tracing::trace!("Flushed");
@@ -48,7 +48,7 @@ async fn download<P: AsRef<Path>>(url: &str, filename: P) -> Result<usize, Error
 
 // Maybe we should target on having one single public function that
 // downloads a list of files asyncronously and return when all is done.
-fn demo(url: &str, filename: &str) -> Result<String, Error> {
+fn demo(artifact: &Artifact, filename: &str) -> Result<String, Error> {
     let mut path = dirs::cache_dir().unwrap();
     path.push(filename);
     //dbg!(reqwest::Url::parse(url).unwrap().to_file_path());
@@ -85,7 +85,13 @@ mod tests {
     // Just testing a concept
     fn demo_block() {
         let filename = demo(
-            "https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml",
+            &Artifact {
+                url: "https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml"
+                    .to_string(),
+                filename: None,
+                size: None,
+                hash: None,
+            },
             "testing.txt",
         )
         .unwrap();
