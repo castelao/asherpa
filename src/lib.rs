@@ -57,14 +57,12 @@ fn demo(artifact: &Artifact, filename: &str) -> Result<String, Error> {
     //let mut hasher = DefaultHasher::new();
     //url.hash(&mut hasher);
     //let filename = format!("{:x}", hasher.finish());
-    dbg!("Inside demo");
     dbg!(&path);
     let rt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()
         .expect("Unable to create a runtime");
-    let size = rt.block_on(download(url, &path))?;
-    dbg!(size);
+    let _size = rt.block_on(download(artifact, &path))?;
     /*
     block_on(download(
         "https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml",
