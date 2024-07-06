@@ -3,11 +3,18 @@ use tokio;
 
 type Error = Box<dyn std::error::Error>;
 
+#[derive(Debug)]
 struct Artifact {
     url: String,
     filename: Option<String>,
     size: Option<usize>,
     hash: Option<String>,
+}
+
+impl Artifact {
+    fn url(&self) -> &str {
+        &self.url
+    }
 }
 
 // Should this have a size limit?
