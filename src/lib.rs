@@ -17,6 +17,14 @@ impl Artifact {
     }
 }
 
+#[derive(Debug)]
+pub struct Resource {
+    url: String,
+    filename: String,
+    size: usize,
+    hash: String,
+}
+
 // Should this have a size limit?
 /// Read from a URL and write to a writer
 ///
@@ -42,7 +50,7 @@ async fn write<W: std::io::Write>(url: &str, mut wtr: W) -> Result<usize, Error>
 // all the content before try to save it. Wouldn't be better to alternate
 // with chunks? Download a block and save it?
 /// Download one single artifact into a file
-async fn get<P: AsRef<Path>>(artifact: &Artifact, filename: P) -> Result<usize, Error> {
+async fn get<P: AsRef<Path>>(artifact: &Artifact, filename: P) -> Result<Resource, Error> {
     //let url = "https://www.ngdc.noaa.gov/thredds/fileServer/global/ETOPO2022/60s/60s_bed_elev_netcdf/ETOPO_2022_v1_60s_N90W180_bed.nc";
     //let hash = "e7e7efb75230280126bc96e910f71010";
     // 491284376
@@ -59,9 +67,15 @@ async fn get<P: AsRef<Path>>(artifact: &Artifact, filename: P) -> Result<usize, 
 
     let size = write(artifact.url(), &mut fp).await?;
     tracing::trace!("Downloaded {} bytes", size);
+    let resource = Resource {
+        url: artifact.url.clone(),
+        filename: filename.as_ref().as_os_str().to_str().unwrap().into(),
+        size,
+        hash: "te enganei".to_string(),
+    };
     fp.flush()?;
     tracing::trace!("Flushed");
-    Ok(size)
+    Ok(resource)
 }
 
 // Maybe we should target on having one single public function that
@@ -89,7 +103,7 @@ fn download(artifacts: Vec<Artifact>) -> Result<String, Error> {
         .enable_all()
         .build()
         .expect("Unable to create a runtime");
-    let _size = rt.block_on(async {
+    let resources = rt.block_on(async {
         // Use match and better error handling
         futures::future::join_all(tasks)
             .await
