@@ -4,7 +4,7 @@ use tokio;
 type Error = Box<dyn std::error::Error>;
 
 #[derive(Debug)]
-struct Artifact {
+pub struct Artifact {
     url: String,
     filename: Option<String>,
     size: Option<usize>,
@@ -80,7 +80,7 @@ async fn get<P: AsRef<Path>>(artifact: &Artifact, filename: P) -> Result<Resourc
 
 // Maybe we should target on having one single public function that
 // downloads a list of files asyncronously and return when all is done.
-fn download(artifacts: Vec<Artifact>) -> Result<String, Error> {
+pub fn download(artifacts: Vec<Artifact>) -> Result<String, Error> {
     let path = dirs::cache_dir().unwrap();
     //path.push(filename);
     //dbg!(reqwest::Url::parse(url).unwrap().to_file_path());
