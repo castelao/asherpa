@@ -55,13 +55,14 @@ async fn get<P: AsRef<Path>>(artifact: &Artifact, filename: P) -> Result<Resourc
     //let hash = "e7e7efb75230280126bc96e910f71010";
     // 491284376
     //let url = "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2/ETOPO2v2-2006/ETOPO2v2g/netCDF/ETOPO2v2g_f4_netCDF.zip";
+    // https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml
     tracing::debug!("Downloading: {:?}", artifact);
     // let mut fp = tokio::fs::File::create(&filename).await?;
     let mut fp = std::io::BufWriter::new(
         std::fs::OpenOptions::new()
             .create_new(true)
             .write(true)
-            .open(filename)?,
+            .open(&filename)?,
     );
     //tracing::debug!("Will save artifact as: {:}", &filename);
 
@@ -98,7 +99,6 @@ pub fn download(artifacts: Vec<Artifact>) -> Result<String, Error> {
     //let mut hasher = DefaultHasher::new();
     //url.hash(&mut hasher);
     //let filename = format!("{:x}", hasher.finish());
-    dbg!(&path);
     let rt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()
@@ -110,12 +110,6 @@ pub fn download(artifacts: Vec<Artifact>) -> Result<String, Error> {
             .into_iter()
             .collect::<Vec<_>>()
     });
-    /*
-    block_on(download(
-        "https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml",
-        &path,
-    ));
-    */
 
     let path = path.into_os_string().into_string().unwrap();
     Ok(path)
@@ -126,10 +120,12 @@ mod tests {
     use super::*;
     use tempfile::NamedTempFile;
 
+    /*
     #[test]
     // Just testing a concept
     fn demo_block() {
-        let filename = demo(
+        // TODO: run async here
+        let filename = get(
             &Artifact {
                 url: "https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml"
                     .to_string(),
@@ -139,10 +135,10 @@ mod tests {
             },
             "testing.txt",
         )
-        .unwrap();
         assert!(std::path::Path::new(&filename).exists());
         std::fs::remove_file(filename).unwrap();
     }
+    */
 
     #[tokio::test]
     async fn demo_async() {
@@ -154,7 +150,23 @@ mod tests {
             )
             .await
             .unwrap();
-            dbg!(size);
+        }
+    }
+
+    #[test]
+    fn basic_download() {
+        //let filename = NamedTempFile::new().unwrap();
+        let tmp_dir = tempfile::TempDir::new().unwrap();
+        let filename = tmp_dir.path().join("basic_download.txt");
+        {
+            let size = download(vec![Artifact {
+                url: "https://raw.githubusercontent.com/castelao/asherpa/main/Cargo.toml"
+                    .to_string(),
+                filename: Some(filename.as_path().as_os_str().to_str().unwrap().into()),
+                size: None,
+                hash: None,
+            }])
+            .unwrap();
         }
     }
 }
