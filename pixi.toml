@@ -10,3 +10,4 @@ platforms = ["linux-64", "osx-arm64"]
 
 [dependencies]
 rust = ">=1.79.0,<1.80"
+compilers = ">=1.7.0,<1.8"
