@@ -16,9 +16,9 @@ rust-version = "1.76.0"
 dirs = "5.0.1"
 futures = "0.3.30"
 reqwest = { version = "0.12.5", default-features = false, features = [ "rustls-tls" ] }
-tokio = { version = "1.38", features = ["fs"] }
+tokio = { version = "1.38", default-features = false, features = ["fs"] }
 tracing = "0.1.40"
 
 [dev-dependencies]
 tempfile = "3.9.0"
-tokio = { version = "1.35.1", features = ["rt", "macros"] }
+tokio = { version = "1.38", features = ["rt", "macros"] }
