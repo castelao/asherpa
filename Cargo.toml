@@ -7,6 +7,7 @@ authors = [
   "Luiz Irber <luiz.irber@gmail.com>"
   ]
 description = "Asynchronous download of support data"
+documentation = "https://docs.rs/asherpa"
 license = "MIT OR Apache-2.0"
 rust-version = "1.76.0"
 categories = ["asynchronous", "data-structures", "development-tools"]
