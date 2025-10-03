@@ -11,6 +11,7 @@ license = "MIT OR Apache-2.0"
 rust-version = "1.76.0"
 categories = ["asynchronous", "data-structures", "development-tools"]
 repository = "https://github.com/castelao/asherpa"
+keywords = ["async", "async-data", "download", "async-download"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
