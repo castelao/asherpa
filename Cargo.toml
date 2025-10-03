@@ -14,6 +14,7 @@ repository = "https://github.com/castelao/asherpa"
 license = "MIT OR Apache-2.0"
 keywords = ["async", "async-data", "download", "async-download"]
 categories = ["asynchronous", "data-structures", "development-tools"]
+include = ["src/*.rs"]
 
 [dependencies]
 dirs = "5.0.1"
