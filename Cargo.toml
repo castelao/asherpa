@@ -1,16 +1,20 @@
 [package]
 name = "asherpa"
 version = "0.0.1"
-edition = "2021"
 authors = [
   "Guilherme Castelão <guilherme@castelao.net>",
   "Luiz Irber <luiz.irber@gmail.com>"
   ]
+edition = "2024"
+rust-version = "1.85.0"
 description = "Asynchronous download of support data"
+documentation = "https://docs.rs/asherpa"
+readme = "README.md"
+repository = "https://github.com/castelao/asherpa"
 license = "MIT OR Apache-2.0"
-rust-version = "1.76.0"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+keywords = ["async", "async-data", "download", "async-download"]
+categories = ["asynchronous", "data-structures", "development-tools"]
+include = ["src/*.rs"]
 
 [dependencies]
 dirs = "5.0.1"
