@@ -8,6 +8,7 @@ authors = [
   ]
 description = "Asynchronous download of support data"
 documentation = "https://docs.rs/asherpa"
+readme = "README.md"
 license = "MIT OR Apache-2.0"
 rust-version = "1.76.0"
 categories = ["asynchronous", "data-structures", "development-tools"]
